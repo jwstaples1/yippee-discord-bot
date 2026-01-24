@@ -1,26 +1,26 @@
 {
-  "name": "yippee-discord-bot",
-  "version": "1.0.0",
-  "description": "Yippee Discord Bot\r (and other bad ideas)",
-  "homepage": "https://github.com/jwstaples1/yippee-discord-bot#readme",
-  "bugs": {
-    "url": "https://github.com/jwstaples1/yippee-discord-bot/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jwstaples1/yippee-discord-bot.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "type": "module",
-  "main": "index.ts",
-  "scripts": {
-    "start": "node --env-file=.env index.ts",
-    "pretty": "npx prettier --write .",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "discord.js": "^14.25.1",
-    "prettier": "^3.8.1"
-  }
+    "name": "yippee-discord-bot",
+    "version": "1.0.0",
+    "description": "Yippee Discord Bot\r (and other bad ideas)",
+    "homepage": "https://github.com/jwstaples1/yippee-discord-bot#readme",
+    "bugs": {
+        "url": "https://github.com/jwstaples1/yippee-discord-bot/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jwstaples1/yippee-discord-bot.git"
+    },
+    "license": "ISC",
+    "author": "",
+    "type": "module",
+    "main": "index.ts",
+    "scripts": {
+        "start": "node --env-file=.env index.ts",
+        "pretty": "npx prettier --write .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "discord.js": "^14.25.1",
+        "prettier": "^3.8.1"
+    }
 }
