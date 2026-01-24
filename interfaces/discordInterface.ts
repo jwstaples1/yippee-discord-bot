@@ -57,6 +57,12 @@ export const startDiscordClient = () => {
             message.reply({ embeds: [YIPPEE_GIF] });
         }
     });
+
+    client.on(Events.GuildMemberAdd, (member) => {
+        refreshServerCommands(client.application!.id, member.guild.id).then(() => {
+            console.log(`Commands added to new server: ${member.guild.name}`)
+        });
+    })
 };
 
 export const refreshServerCommands = async (
