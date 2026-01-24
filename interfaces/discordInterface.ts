@@ -50,7 +50,7 @@ export const startDiscordClient = () => {
     client.on(Events.MessageCreate, async (message) => {
         if (message.author.bot) return;
 
-        const yippeePattern: RegExp = /y+i+p+p+e+e+$/i;
+        const yippeePattern: RegExp = /y+i+p+p+e+e+/i;
         const words = message.content.split(" ");
 
         if (words.find((word) => yippeePattern.test(word))) {
