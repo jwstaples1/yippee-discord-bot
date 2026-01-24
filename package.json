@@ -12,13 +12,14 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "index.ts",
   "scripts": {
+    "start": "node --env-file=.env index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "discord.js": "^14.25.1",
-    "eslint": "^9.39.2"
+    "prettier": "^3.8.1"
   }
 }
