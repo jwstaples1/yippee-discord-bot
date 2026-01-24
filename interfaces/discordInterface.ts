@@ -2,9 +2,10 @@ import { ChatInputCommandInteraction, Client, EmbedBuilder, Events, GatewayInten
 
 /** Discord token stored in .env file */
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+const YIPPEE_GIF = new EmbedBuilder().setImage("https://media.tenor.com/9BbBRWKXoFcAAAAi/autism-creature-tbh-creature.gif");
 
 export const startDiscordClient = () => {
-    const client = new Client({intents: [GatewayIntentBits.Guilds]});
+    const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]});
 
     client.once(Events.ClientReady, async () => {
         console.log("Logged in!");
@@ -21,9 +22,20 @@ export const startDiscordClient = () => {
 
     client.on(Events.InteractionCreate, async (interaction) => {
         if(interaction.isChatInputCommand() && isYippeeCommand(interaction)) {
-            const yippeeGif = new EmbedBuilder().setImage("https://media.tenor.com/9BbBRWKXoFcAAAAi/autism-creature-tbh-creature.gif");
+            
 
-            await interaction.reply({embeds: [yippeeGif]});
+            await interaction.reply({embeds: [YIPPEE_GIF]});
+        }
+    })
+
+    client.on(Events.MessageCreate, async (message) => {
+        if(message.author.bot) return;
+
+        const yippeePattern: RegExp = /y+i+p+p+e+e+$/i;
+        const words = message.content.split(' ');
+
+        if(words.find(word => yippeePattern.test(word))) {
+            message.reply({embeds: [YIPPEE_GIF]});
         }
     })
 }
