@@ -10,20 +10,29 @@ const isYippeeCommand = (command: ChatInputCommandInteraction): boolean => {
 };
 
 export const handleYippee = (discordInterface: DiscordInterface) => {
-    discordInterface.registerEventListener(Events.InteractionCreate, async (interaction) => {
-        if (interaction.isChatInputCommand() && isYippeeCommand(interaction)) {
-            await interaction.reply({ embeds: [YIPPEE_GIF] });
-        }
-    });
+    discordInterface.registerEventListener(
+        Events.InteractionCreate,
+        async (interaction) => {
+            if (
+                interaction.isChatInputCommand() &&
+                isYippeeCommand(interaction)
+            ) {
+                await interaction.reply({ embeds: [YIPPEE_GIF] });
+            }
+        },
+    );
 
-    discordInterface.registerEventListener(Events.MessageCreate, async (message) => {
-        if (message.author.bot) return;
+    discordInterface.registerEventListener(
+        Events.MessageCreate,
+        async (message) => {
+            if (message.author.bot) return;
 
-        const yippeePattern: RegExp = /y+i+p+p+e+e+/i;
-        const words = message.content.split(" ");
+            const yippeePattern: RegExp = /y+i+p+p+e+e+/i;
+            const words = message.content.split(" ");
 
-        if (words.find((word) => yippeePattern.test(word))) {
-            message.reply({ embeds: [YIPPEE_GIF] });
-        }
-    })
-}
+            if (words.find((word) => yippeePattern.test(word))) {
+                message.reply({ embeds: [YIPPEE_GIF] });
+            }
+        },
+    );
+};

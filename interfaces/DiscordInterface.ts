@@ -49,7 +49,10 @@ export class DiscordInterface {
         return this._discordClient;
     }
 
-    public registerEventListener<Event extends keyof ClientEvents>(event: Event, handler: (...args: ClientEvents[Event]) => void) {
+    public registerEventListener<Event extends keyof ClientEvents>(
+        event: Event,
+        handler: (...args: ClientEvents[Event]) => void,
+    ) {
         this._discordClient.on(event, handler);
     }
 
