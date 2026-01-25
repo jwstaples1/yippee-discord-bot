@@ -27,6 +27,9 @@ export class DiscordInterface {
             new SlashCommandBuilder()
                 .setName("yippee")
                 .setDescription("yippee"),
+            new SlashCommandBuilder()
+                .setName("quotes")
+                .setDescription("your daily quote, served up Connor's way"),//i think i did this right I hope
         ];
 
         this._discordClient.on(Events.GuildMemberAdd, (member) => {
