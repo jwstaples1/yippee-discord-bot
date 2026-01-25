@@ -1,6 +1,6 @@
 import {
     Client,
-    ClientEvents,
+    type ClientEvents,
     Events,
     GatewayIntentBits,
     Guild,
