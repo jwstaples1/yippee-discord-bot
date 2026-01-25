@@ -1,5 +1,6 @@
 import {
     Client,
+    ClientEvents,
     Events,
     GatewayIntentBits,
     Guild,
@@ -46,6 +47,10 @@ export class DiscordInterface {
 
     get client(): Client {
         return this._discordClient;
+    }
+
+    public registerEventListener<Event extends keyof ClientEvents>(event: Event, handler: (...args: ClientEvents[Event]) => void) {
+        this._discordClient.on(event, handler);
     }
 
     private async _onReady() {

@@ -11,15 +11,14 @@ const isYippeeCommand = (command: ChatInputCommandInteraction): boolean => {
 
 const initialize = (): void => {
     const discordInterface = new DiscordInterface();
-    const discordClient = discordInterface.client;
 
-    discordClient.on(Events.InteractionCreate, async (interaction) => {
+    discordInterface.registerEventListener(Events.InteractionCreate, async (interaction) => {
         if (interaction.isChatInputCommand() && isYippeeCommand(interaction)) {
             await interaction.reply({ embeds: [YIPPEE_GIF] });
         }
     });
 
-    discordClient.on(Events.MessageCreate, async (message) => {
+    discordInterface.registerEventListener(Events.MessageCreate, async (message) => {
         if (message.author.bot) return;
 
         const yippeePattern: RegExp = /y+i+p+p+e+e+/i;
@@ -28,7 +27,7 @@ const initialize = (): void => {
         if (words.find((word) => yippeePattern.test(word))) {
             message.reply({ embeds: [YIPPEE_GIF] });
         }
-    });
+    })
 };
 
 // run the actual function that will start the bot
