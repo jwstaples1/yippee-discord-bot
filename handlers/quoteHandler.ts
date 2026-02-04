@@ -9,7 +9,7 @@ The beautiful algorithm for Daily Connor's Quotes
 (may expand to others quotes too, would be funny)
 
 1. get list of all quotes
-either separately download log of #connors-quotes, clean, tokenize, put into arraylist/linkedlist/something, 1D will prob be fine
+either separately download log of #connors-quotes, clean, tokenize, put into arraylist/linkedlist/messages, 1D will prob be fine
 or have the bot scrape all chat history from channel, and update upon log-in? or every day/24hrs? idk
 
 2. when command is called, RNG from 0 - quotes.length-1
@@ -30,3 +30,47 @@ the only headache for this (probably) will be figuring out how to get a list of 
 but I am also brick central station and forgor how to discord.js
 and will need to re-learn for the sake of wanting to do this
 */
+
+import { ChatInputCommandInteraction, Events, Message } from "discord.js";
+import { DiscordInterface } from "../interfaces/discordInterface.ts";
+
+const ConnorsQuotes: string[] = [];
+
+export const loadConnorsQuotes = async (discordInterface: DiscordInterface) => {
+    const channelID: string = "707294350270267453";
+    const channel = discordInterface.client.channels.cache.get(channelID);
+    let messages: Map<string, Message>;
+    let recentMsgID: string | undefined;
+
+    if (channel!.isTextBased()) {
+        do {
+            messages = await channel.messages.fetch({ limit: 100, before: recentMsgID })
+
+            for (const msg of messages.values()) {
+                if (msg.content.match(/- Connor 202/)) {
+                    ConnorsQuotes.push(msg.content);
+                }
+                recentMsgID = msg.id;
+            }
+        } while (messages.size == 100);
+    }
+}
+
+export const handleQuote = async (discordInterface: DiscordInterface) => {
+    discordInterface.registerEventListener(
+        Events.InteractionCreate,
+        async (interaction) => {
+            if (
+                interaction.isChatInputCommand() &&
+                isQuoteCommand(interaction)
+            ) {
+                let randIndex = Math.floor(Math.random() * ConnorsQuotes.length);
+                await interaction.reply(ConnorsQuotes[randIndex]);
+            }
+        },
+    )
+}
+
+const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
+    return interaction.commandName == "quote";
+}

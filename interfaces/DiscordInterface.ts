@@ -8,6 +8,7 @@ import {
     Routes,
     SlashCommandBuilder,
 } from "discord.js";
+import { loadConnorsQuotes } from "../handlers/quoteHandler.ts";
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
@@ -28,7 +29,7 @@ export class DiscordInterface {
                 .setName("yippee")
                 .setDescription("yippee"),
             new SlashCommandBuilder()
-                .setName("quotes")
+                .setName("quote")
                 .setDescription("your daily quote, served up Connor's way"),//i think i did this right I hope
         ];
 
@@ -43,7 +44,7 @@ export class DiscordInterface {
             });
         });
 
-        this._onReady();
+        this._discordClient.on(Events.ClientReady, () => this._onReady());
 
         this._discordClient.login(DISCORD_TOKEN);
     }
@@ -73,10 +74,13 @@ export class DiscordInterface {
                 console.log("All commands refreshed");
             });
         }
+        //load connor quotes upon start up
+        await loadConnorsQuotes(this);
     }
 
     private async _refreshServerCommands(clientId: string, serverId: string) {
         const restAPI = new REST().setToken(DISCORD_TOKEN!);
+
 
         try {
             await restAPI.put(
