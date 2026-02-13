@@ -10,12 +10,14 @@ import {
 } from "discord.js";
 import { loadConnorsQuotes } from "../handlers/connorQuoteHandler.ts";
 import { loadOthersQuotes } from "../handlers/otherQuoteHandler.ts";
+import blacklistFile from "../blacklistedCommands.json" with {type: 'json'};
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 export class DiscordInterface {
     private _discordClient: Client;
     private _commands: SlashCommandBuilder[];
+    private _blacklist: Map<string, string[]>;
 
     constructor() {
         this._discordClient = new Client({
@@ -36,6 +38,9 @@ export class DiscordInterface {
                 .setName("oquote")
                 .setDescription("your daily quote, served up the other's way"),
         ];
+
+        this._blacklist = new Map<string, string[]>();
+        this._loadBlacklist();
 
         this._discordClient.on(Events.GuildMemberAdd, (member) => {
             this._refreshServerCommands(
@@ -87,16 +92,27 @@ export class DiscordInterface {
     private async _refreshServerCommands(clientId: string, serverId: string) {
         const restAPI = new REST().setToken(DISCORD_TOKEN!);
 
+        const blacklistedCommands: Set<string> = new Set<string>(this._blacklist.get(serverId));
+        const filteredCommands = this._commands.filter((command) => !blacklistedCommands.has(command.name));
 
         try {
             await restAPI.put(
                 Routes.applicationGuildCommands(clientId, serverId),
                 {
-                    body: this._commands,
+                    body: filteredCommands,
                 },
             );
         } catch (e) {
             console.error(e);
         }
+    }
+
+    private _loadBlacklist() {
+        const blacklist = new Map<string, string[]>();
+        blacklistFile.blacklist.forEach(({ serverID, commands }) => {
+            blacklist.set(serverID, commands);
+        })
+
+        this._blacklist = blacklist;
     }
 }
