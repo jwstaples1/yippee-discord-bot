@@ -44,7 +44,10 @@ export const loadConnorsQuotes = async (discordInterface: DiscordInterface) => {
 
     if (channel!.isTextBased()) {
         do {
-            messages = await channel.messages.fetch({ limit: 100, before: recentMsgID })
+            messages = await channel.messages.fetch({
+                limit: 100,
+                before: recentMsgID,
+            });
 
             for (const msg of messages.values()) {
                 if (msg.content.match(/- Connor 202/)) {
@@ -54,7 +57,7 @@ export const loadConnorsQuotes = async (discordInterface: DiscordInterface) => {
             }
         } while (messages.size == 100);
     }
-}
+};
 
 export const handleConnorQuote = async (discordInterface: DiscordInterface) => {
     discordInterface.registerEventListener(
@@ -64,13 +67,15 @@ export const handleConnorQuote = async (discordInterface: DiscordInterface) => {
                 interaction.isChatInputCommand() &&
                 isQuoteCommand(interaction)
             ) {
-                let randIndex = Math.floor(Math.random() * ConnorsQuotes.length);
+                let randIndex = Math.floor(
+                    Math.random() * ConnorsQuotes.length,
+                );
                 await interaction.reply(ConnorsQuotes[randIndex]);
             }
         },
-    )
-}
+    );
+};
 
 const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
     return interaction.commandName == "cquote";
-}
+};

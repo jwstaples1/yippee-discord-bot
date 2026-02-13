@@ -10,7 +10,7 @@ import {
 } from "discord.js";
 import { loadConnorsQuotes } from "../handlers/connorQuoteHandler.ts";
 import { loadOthersQuotes } from "../handlers/otherQuoteHandler.ts";
-import blacklistFile from "../blacklistedCommands.json" with {type: 'json'};
+import blacklistFile from "../blacklistedCommands.json" with { type: "json" };
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
@@ -33,7 +33,7 @@ export class DiscordInterface {
                 .setDescription("yippee"),
             new SlashCommandBuilder()
                 .setName("cquote")
-                .setDescription("your daily quote, served up Connor's way"),//i think i did this right I hope
+                .setDescription("your daily quote, served up Connor's way"), //i think i did this right I hope
             new SlashCommandBuilder()
                 .setName("oquote")
                 .setDescription("your daily quote, served up the other's way"),
@@ -92,8 +92,12 @@ export class DiscordInterface {
     private async _refreshServerCommands(clientId: string, serverId: string) {
         const restAPI = new REST().setToken(DISCORD_TOKEN!);
 
-        const blacklistedCommands: Set<string> = new Set<string>(this._blacklist.get(serverId));
-        const filteredCommands = this._commands.filter((command) => !blacklistedCommands.has(command.name));
+        const blacklistedCommands: Set<string> = new Set<string>(
+            this._blacklist.get(serverId),
+        );
+        const filteredCommands = this._commands.filter(
+            (command) => !blacklistedCommands.has(command.name),
+        );
 
         try {
             await restAPI.put(
@@ -111,7 +115,7 @@ export class DiscordInterface {
         const blacklist = new Map<string, string[]>();
         blacklistFile.blacklist.forEach(({ serverID, commands }) => {
             blacklist.set(serverID, commands);
-        })
+        });
 
         this._blacklist = blacklist;
     }

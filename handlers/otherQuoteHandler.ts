@@ -1,5 +1,3 @@
-
-
 import { ChatInputCommandInteraction, Events, Message } from "discord.js";
 import { DiscordInterface } from "../interfaces/discordInterface.ts";
 
@@ -13,7 +11,10 @@ export const loadOthersQuotes = async (discordInterface: DiscordInterface) => {
 
     if (channel!.isTextBased()) {
         do {
-            messages = await channel.messages.fetch({ limit: 100, before: recentMsgID })
+            messages = await channel.messages.fetch({
+                limit: 100,
+                before: recentMsgID,
+            });
 
             for (const msg of messages.values()) {
                 if (msg.content.match(/202/)) {
@@ -23,7 +24,7 @@ export const loadOthersQuotes = async (discordInterface: DiscordInterface) => {
             }
         } while (messages.size == 100);
     }
-}
+};
 
 export const handleOtherQuote = async (discordInterface: DiscordInterface) => {
     discordInterface.registerEventListener(
@@ -37,9 +38,9 @@ export const handleOtherQuote = async (discordInterface: DiscordInterface) => {
                 await interaction.reply(othersQuotes[randIndex]);
             }
         },
-    )
-}
+    );
+};
 
 const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
     return interaction.commandName == "oquote";
-}
+};
