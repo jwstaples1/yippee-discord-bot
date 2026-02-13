@@ -8,7 +8,8 @@ import {
     Routes,
     SlashCommandBuilder,
 } from "discord.js";
-import { loadConnorsQuotes } from "../handlers/quoteHandler.ts";
+import { loadConnorsQuotes } from "../handlers/connorQuoteHandler.ts";
+import { loadOthersQuotes } from "../handlers/otherQuoteHandler.ts";
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
@@ -29,8 +30,11 @@ export class DiscordInterface {
                 .setName("yippee")
                 .setDescription("yippee"),
             new SlashCommandBuilder()
-                .setName("quote")
+                .setName("cquote")
                 .setDescription("your daily quote, served up Connor's way"),//i think i did this right I hope
+            new SlashCommandBuilder()
+                .setName("oquote")
+                .setDescription("your daily quote, served up the other's way"),
         ];
 
         this._discordClient.on(Events.GuildMemberAdd, (member) => {
@@ -76,6 +80,8 @@ export class DiscordInterface {
         }
         //load connor quotes upon start up
         await loadConnorsQuotes(this);
+        //load others quotes upon start up
+        await loadOthersQuotes(this);
     }
 
     private async _refreshServerCommands(clientId: string, serverId: string) {

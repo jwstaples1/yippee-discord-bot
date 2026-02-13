@@ -56,7 +56,7 @@ export const loadConnorsQuotes = async (discordInterface: DiscordInterface) => {
     }
 }
 
-export const handleQuote = async (discordInterface: DiscordInterface) => {
+export const handleConnorQuote = async (discordInterface: DiscordInterface) => {
     discordInterface.registerEventListener(
         Events.InteractionCreate,
         async (interaction) => {
@@ -72,5 +72,5 @@ export const handleQuote = async (discordInterface: DiscordInterface) => {
 }
 
 const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
-    return interaction.commandName == "quote";
+    return interaction.commandName == "cquote";
 }
