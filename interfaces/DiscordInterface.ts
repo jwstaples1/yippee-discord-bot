@@ -13,6 +13,7 @@ import { loadOthersQuotes } from "../handlers/otherQuoteHandler.ts";
 import blacklistFile from "../blacklistedCommands.json" with {type: 'json'};
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
+export const ENVIRONMENT = process.env.ENVIRONMENT;
 
 export class DiscordInterface {
     private _discordClient: Client;
@@ -38,6 +39,13 @@ export class DiscordInterface {
                 .setName("oquote")
                 .setDescription("your daily quote, served up the other's way"),
         ];
+
+        // if we're running in dev, add "-dev" to the end of the commands to differentiate
+        if (ENVIRONMENT == "DEV") {
+            this._commands.forEach((command: SlashCommandBuilder) => {
+                command.setName(command.name + "-dev");
+            })
+        }
 
         this._blacklist = new Map<string, string[]>();
         this._loadBlacklist();
@@ -85,7 +93,7 @@ export class DiscordInterface {
         }
         //load connor quotes upon start up
         await loadConnorsQuotes(this);
-        //load others quotes upon start up
+        // //load others quotes upon start up
         await loadOthersQuotes(this);
     }
 
@@ -93,7 +101,14 @@ export class DiscordInterface {
         const restAPI = new REST().setToken(DISCORD_TOKEN!);
 
         const blacklistedCommands: Set<string> = new Set<string>(this._blacklist.get(serverId));
-        const filteredCommands = this._commands.filter((command) => !blacklistedCommands.has(command.name));
+        const filteredCommands = this._commands.filter((command) => {
+            // command names end in "-dev" on dev bot
+            if (ENVIRONMENT == "DEV") {
+                return !blacklistedCommands.has(command.name.substring(0, command.name.indexOf("-dev")));
+            }
+
+            return !blacklistedCommands.has(command.name);
+        });
 
         try {
             await restAPI.put(

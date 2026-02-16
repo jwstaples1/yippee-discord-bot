@@ -1,7 +1,7 @@
 
 
 import { ChatInputCommandInteraction, Events, Message } from "discord.js";
-import { DiscordInterface } from "../interfaces/discordInterface.ts";
+import { DiscordInterface } from "../interfaces/DiscordInterface.ts";
 
 const othersQuotes: string[] = [];
 
