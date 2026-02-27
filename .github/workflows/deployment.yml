@@ -10,15 +10,30 @@ jobs:
         steps:
             - name: Checkout main
               uses: actions/checkout@v4
-              with:
-                path: "build"
+              
+            - name: Setup SSH key
+              run: |
+                mkdir -p ~/.ssh
+                echo "${{secrets.PRODUCTION_SSH_KEY}}" > ~/.ssh/deploy_key
+                chmod 600 ~/.ssh/deploy_key
+                ssh-keyscan -H ${{secrets.PRODUCTION_SERVER_HOST}} >> ~/.ssh/known_hosts
 
-            - name: Deploy over ssh
+
+            - name: Sync code to server
+              run: |
+                rsync -avz -e "ssh -i ~/.ssh/deploy_key" --delete ./ ${{ secrets.PRODUCTION_SERVER_USER }}@${{ secrets.PRODUCTION_SERVER_HOST }}:/deploy
+
+            - name: Deploy updated code
               uses: appleboy/ssh-action@v0.1.3
               with:
                 host: ${{secrets.PRODUCTION_SERVER_HOST}}
                 username: ${{secrets.PRODUCTION_SERVER_USER}}
                 key: ${{secrets.PRODUCTION_SSH_KEY}}
-                password: ${{secrets.PRODUCTION_SERVER_PASSWORD}}
-                script: whoami
+                script: |
+                    DEPLOY_DIR=/deploy
+
+                    cd $DEPLOY_DIR
+                    npm ci --production 
+                    pm2 restart yippee-discord-bot || pm2 start index.ts --name yippee-discord-bot
+                    
                 
