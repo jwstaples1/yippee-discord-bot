@@ -1,0 +1,24 @@
+name: Production Deployment
+
+on:
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout main
+              uses: actions/checkout@v4
+              with:
+                path: "build"
+
+            - name: Deploy over ssh
+              uses: appleboy/ssh-action@v0.1.3
+              with:
+                host: ${{secrets.PRODUCTION_SERVER_HOST}}
+                username: ${{secrets.PRODUCTION_SERVER_USER}}
+                key: ${{secrets.PRODUCTION_SSH_KEY}}
+                password: ${{secrets.PRODUCTION_SERVER_PASSWORD}}
+                script: whoami
+                
