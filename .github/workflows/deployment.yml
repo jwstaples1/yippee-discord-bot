@@ -25,7 +25,7 @@ jobs:
 
             - name: Sync code to server
               run: |
-                rsync -avz -e "ssh -i ~/.ssh/deploy_key" --delete ./ ${{ secrets.PRODUCTION_SERVER_USER }}@${{ secrets.PRODUCTION_SERVER_HOST }}:/deploy
+                rsync -avz -e "ssh -i ~/.ssh/deploy_key" --delete --exclude ".env" ./ ${{ secrets.PRODUCTION_SERVER_USER }}@${{ secrets.PRODUCTION_SERVER_HOST }}:/deploy
 
             - name: Deploy updated code
               uses: appleboy/ssh-action@v0.1.3
