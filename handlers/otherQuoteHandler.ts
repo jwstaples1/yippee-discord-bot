@@ -41,5 +41,5 @@ export const handleOtherQuote = async (discordInterface: DiscordInterface) => {
 }
 
 const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
-    return interaction.commandName == "oquote";
+    return interaction.commandName.startsWith("oquote");
 }

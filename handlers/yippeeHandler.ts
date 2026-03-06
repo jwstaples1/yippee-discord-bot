@@ -5,8 +5,8 @@ const YIPPEE_GIF = new EmbedBuilder().setImage(
     "https://media.tenor.com/9BbBRWKXoFcAAAAi/autism-creature-tbh-creature.gif",
 );
 
-const isYippeeCommand = (command: ChatInputCommandInteraction): boolean => {
-    return command.commandName == "yippee";
+const isYippeeCommand = (interaction: ChatInputCommandInteraction): boolean => {
+    return interaction.commandName.startsWith("yippee");
 };
 
 export const handleYippee = (discordInterface: DiscordInterface) => {
