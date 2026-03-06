@@ -1,10 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Events } from "discord.js";
 import { DiscordInterface } from "../interfaces/DiscordInterface.ts";
 
-const isWheelCommand = (command: ChatInputCommandInteraction): boolean => {
-    return command.commandName.startsWith("wheel");
-};
-
 export const handleWheel = (discordInterface: DiscordInterface) => {
     discordInterface.registerEventListener(
         Events.InteractionCreate,
@@ -23,4 +19,8 @@ export const handleWheel = (discordInterface: DiscordInterface) => {
             }
         },
     );
+};
+
+const isWheelCommand = (interaction: ChatInputCommandInteraction): boolean => {
+    return interaction.commandName.startsWith("wheel");
 };

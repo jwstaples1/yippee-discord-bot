@@ -4,7 +4,6 @@ import { handleOtherQuote } from "./handlers/otherQuoteHandler.ts";
 import { handleWheel } from "./handlers/wheelHandler.ts";
 import { DiscordInterface } from "./interfaces/DiscordInterface.ts";
 
-
 const initialize = (): void => {
     const discordInterface = new DiscordInterface();
     handleYippee(discordInterface);

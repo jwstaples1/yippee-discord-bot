@@ -72,5 +72,5 @@ export const handleConnorQuote = async (discordInterface: DiscordInterface) => {
 }
 
 const isQuoteCommand = (interaction: ChatInputCommandInteraction): boolean => {
-    return interaction.commandName == "cquote";
+    return interaction.commandName.startsWith("cquote");
 }
