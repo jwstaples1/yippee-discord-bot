@@ -38,6 +38,49 @@ export class DiscordInterface {
             new SlashCommandBuilder()
                 .setName("oquote")
                 .setDescription("your daily quote, served up the other's way"),
+            new SlashCommandBuilder()
+                .setName("wheel")
+                .setDescription("the wheel of truth has spoken!")
+                .addStringOption(option =>
+                    option.setName("contestant1")
+                        .setDescription("the lucky contestant!")
+                        .setRequired(true)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant2")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(true)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant3")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant4")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant5")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant6")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant7")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                )
+                .addStringOption(option =>
+                    option.setName("contestant8")
+                        .setDescription("another lucky contestant!")
+                        .setRequired(false)
+                ) as SlashCommandBuilder,
         ];
 
         // if we're running in dev, add "-dev" to the end of the commands to differentiate
