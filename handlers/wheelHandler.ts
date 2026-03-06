@@ -22,5 +22,7 @@ export const handleWheel = (discordInterface: DiscordInterface) => {
 };
 
 const isWheelCommand = (interaction: ChatInputCommandInteraction): boolean => {
+    //code got mad at me because you added -dev to command names in the dev env,
+    //but this still works so its chill
     return interaction.commandName.startsWith("wheel");
 };
