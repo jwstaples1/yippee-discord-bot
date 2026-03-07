@@ -1,6 +1,7 @@
 import {
     Client,
     type ClientEvents,
+    Collection,
     Events,
     GatewayIntentBits,
     Guild,
@@ -87,6 +88,21 @@ export class DiscordInterface {
         await loadConnorsQuotes(this);
         //load others quotes upon start up
         await loadOthersQuotes(this);
+    }
+
+    public getAllServers(): Collection<string, Guild> {
+        return this._discordClient.guilds.cache;
+    }
+
+    public sendAStupidMessage(message: string) {
+        const guild = this._discordClient.guilds.cache.find((server) => server.name === "bot playground");
+        if (guild) {
+            const channelMap = guild.channels.cache;
+            const generalChannel = channelMap.find((channel) => channel.name === "general" && channel.isTextBased());
+            if (generalChannel && generalChannel.isTextBased()) {
+                generalChannel.send(message);
+            }
+        }
     }
 
     private async _refreshServerCommands(clientId: string, serverId: string) {

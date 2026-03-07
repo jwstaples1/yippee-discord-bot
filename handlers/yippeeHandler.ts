@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder, Events } from "discord.js";
-import { DiscordInterface } from "../interfaces/discordInterface.ts";
+import { DiscordInterface } from "../interfaces/DiscordInterface.ts";
 
 const YIPPEE_GIF = new EmbedBuilder().setImage(
     "https://media.tenor.com/9BbBRWKXoFcAAAAi/autism-creature-tbh-creature.gif",

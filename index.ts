@@ -1,11 +1,8 @@
-import { DiscordInterface } from "./interfaces/discordInterface.ts";
+import { DiscordInterface } from "./interfaces/DiscordInterface.ts";
 import { handleYippee } from "./handlers/yippeeHandler.ts";
 import { handleConnorQuote } from "./handlers/connorQuoteHandler.ts";
 import { handleOtherQuote } from "./handlers/otherQuoteHandler.ts";
-
-import { spawn } from "node:child_process";
-import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { ControlPanelInterface } from "./interfaces/ControlPanelInterface.ts";
 
 const initialize = (): void => {
     const discordInterface = new DiscordInterface();
@@ -13,15 +10,9 @@ const initialize = (): void => {
     handleConnorQuote(discordInterface);
     handleOtherQuote(discordInterface);
 
-    const controlPanelProcess = spawn("npm.cmd", ["run", "dev"], {
-        cwd: path.join(import.meta.dirname, "control-panel"),
-        shell: true,
-    });
-
-    process.on("exit", () => {
-        controlPanelProcess.kill();
-    });
+    const controlPanelInterface = new ControlPanelInterface(discordInterface);
 };
+
 
 // run the actual function that will start the bot
 initialize();
