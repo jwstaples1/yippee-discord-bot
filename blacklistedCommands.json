@@ -2,9 +2,7 @@
     "blacklist": [
         {
             "serverID": "689491112024735759",
-            "commands": [
-                "cquote"
-            ]
+            "commands": ["cquote"]
         }
     ]
 }

@@ -10,7 +10,7 @@ import {
 } from "discord.js";
 import { loadConnorsQuotes } from "../handlers/connorQuoteHandler.ts";
 import { loadOthersQuotes } from "../handlers/otherQuoteHandler.ts";
-import blacklistFile from "../blacklistedCommands.json" with {type: 'json'};
+import blacklistFile from "../blacklistedCommands.json" with { type: "json" };
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 export const ENVIRONMENT = process.env.ENVIRONMENT;
@@ -26,6 +26,7 @@ export class DiscordInterface {
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildVoiceStates,
             ],
         });
         this._commands = [
@@ -34,52 +35,65 @@ export class DiscordInterface {
                 .setDescription("yippee"),
             new SlashCommandBuilder()
                 .setName("cquote")
-                .setDescription("your daily quote, served up Connor's way"),//i think i did this right I hope
+                .setDescription("your daily quote, served up Connor's way"), //i think i did this right I hope
             new SlashCommandBuilder()
                 .setName("oquote")
                 .setDescription("your daily quote, served up the other's way"),
             new SlashCommandBuilder()
+                .setName("play")
+                .setDescription(
+                    "make a horrible mistake by playing something dumb",
+                ),
+            new SlashCommandBuilder()
                 .setName("wheel")
                 .setDescription("the wheel of truth has spoken!")
-                .addStringOption(option =>
-                    option.setName("contestant1")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant1")
                         .setDescription("the lucky contestant!")
-                        .setRequired(true)
+                        .setRequired(true),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant2")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant2")
                         .setDescription("another lucky contestant!")
-                        .setRequired(true)
+                        .setRequired(true),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant3")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant3")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant4")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant4")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant5")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant5")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant6")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant6")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant7")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant7")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 )
-                .addStringOption(option =>
-                    option.setName("contestant8")
+                .addStringOption((option) =>
+                    option
+                        .setName("contestant8")
                         .setDescription("another lucky contestant!")
-                        .setRequired(false)
+                        .setRequired(false),
                 ) as SlashCommandBuilder,
         ];
 
@@ -87,7 +101,7 @@ export class DiscordInterface {
         if (ENVIRONMENT == "DEV") {
             this._commands.forEach((command: SlashCommandBuilder) => {
                 command.setName(command.name + "-dev");
-            })
+            });
         }
 
         this._blacklist = new Map<string, string[]>();
@@ -143,11 +157,15 @@ export class DiscordInterface {
     private async _refreshServerCommands(clientId: string, serverId: string) {
         const restAPI = new REST().setToken(DISCORD_TOKEN!);
 
-        const blacklistedCommands: Set<string> = new Set<string>(this._blacklist.get(serverId));
+        const blacklistedCommands: Set<string> = new Set<string>(
+            this._blacklist.get(serverId),
+        );
         const filteredCommands = this._commands.filter((command) => {
             // command names end in "-dev" on dev bot
             if (ENVIRONMENT == "DEV") {
-                return !blacklistedCommands.has(command.name.substring(0, command.name.indexOf("-dev")));
+                return !blacklistedCommands.has(
+                    command.name.substring(0, command.name.indexOf("-dev")),
+                );
             }
 
             return !blacklistedCommands.has(command.name);
@@ -169,7 +187,7 @@ export class DiscordInterface {
         const blacklist = new Map<string, string[]>();
         blacklistFile.blacklist.forEach(({ serverID, commands }) => {
             blacklist.set(serverID, commands);
-        })
+        });
 
         this._blacklist = blacklist;
     }

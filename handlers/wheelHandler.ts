@@ -15,7 +15,9 @@ export const handleWheel = (discordInterface: DiscordInterface) => {
                 const argsCount = names.length;
                 const winnerIndex = Math.floor(Math.random() * argsCount);
                 const winner = names[winnerIndex];
-                await interaction.reply(`And the winner is...\n${winner.value}!`);
+                await interaction.reply(
+                    `And the winner is...\n${winner.value}!`,
+                );
             }
         },
     );
